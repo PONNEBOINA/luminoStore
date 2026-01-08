@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap');
+
+:root {
+  font-family: 'Source Sans 3', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f2f6fb;
+  color: #1f2c3d;
+  --lumina-bg: #f6f8fb;
+  --lumina-surface: #ffffff;
+  --lumina-muted: #6c7a8b;
+  --lumina-heading: #233350;
+  --lumina-border: #e3e9f2;
+  --lumina-accent: #ef7d55;
+  --lumina-accent-2: #f5b74e;
+  --lumina-shadow: 0 10px 30px rgba(20, 35, 70, 0.08);
+  --lumina-radius: 28px;
+  --lumina-font: 'Source Sans 3', 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--lumina-bg);
+  color: var(--lumina-heading);
+}
+
+#root {
+  min-height: 100vh;
+}

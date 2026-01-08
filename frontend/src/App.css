@@ -1,0 +1,8 @@
+.lumina-app {
+  min-height: 100vh;
+  background: #f2f6fb;
+}
+
+.lumina-app main {
+  padding: 2rem 0 4rem;
+}
