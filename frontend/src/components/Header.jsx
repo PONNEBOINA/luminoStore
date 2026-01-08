@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Header.css';
 
-const Header = () => {
+const Header = ({ cartCount, onCartClick, onSearchClick }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -32,7 +32,12 @@ const Header = () => {
         </nav>
 
         <div className="lumina-header__actions">
-          <button type="button" className="lumina-header__icon-btn" aria-label="Search">
+          <button 
+            type="button" 
+            className="lumina-header__icon-btn" 
+            aria-label="Search"
+            onClick={onSearchClick}
+          >
             <svg viewBox="0 0 20 20" role="img" aria-hidden="true">
               <path
                 d="M14 14l4 4"
@@ -51,7 +56,12 @@ const Header = () => {
               />
             </svg>
           </button>
-          <button type="button" className="lumina-header__icon-btn" aria-label="Cart">
+          <button 
+            type="button" 
+            className="lumina-header__icon-btn lumina-header__cart-btn" 
+            aria-label="Cart"
+            onClick={onCartClick}
+          >
             <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
               <path
                 d="M3 5h2l2.6 9.4a1 1 0 0 0 .96.73h8.78a1 1 0 0 0 .97-.76L19 7H6"
@@ -64,6 +74,7 @@ const Header = () => {
               <circle cx="10" cy="19" r="1.2" fill="currentColor" />
               <circle cx="17" cy="19" r="1.2" fill="currentColor" />
             </svg>
+            {cartCount > 0 && <span className="lumina-cart-badge">{cartCount}</span>}
           </button>
         </div>
       </div>

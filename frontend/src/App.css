@@ -1,8 +1,9 @@
 .lumina-app {
   min-height: 100vh;
-  background: #f2f6fb;
+  background: var(--lumina-bg);
 }
 
 .lumina-app main {
-  padding: 2rem 0 4rem;
+  padding: 3rem 0 5rem;
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.03) 0%, transparent 100%);
 }

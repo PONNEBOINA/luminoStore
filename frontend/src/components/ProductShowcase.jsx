@@ -18,9 +18,10 @@ const formatCurrency = (value) =>
 const PAGE_SIZE = 8;
 const MAX_LIMIT = 100;
 
-const ProductShowcase = () => {
+const ProductShowcase = ({ cart, onAddToCart, isSearchOpen }) => {
   const [selectedFilter, setSelectedFilter] = useState('all');
-  const [priceRange, setPriceRange] = useState({ min: 30, max: 480 });
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+  const [tempPriceRange, setTempPriceRange] = useState({ min: 0, max: 1000 });
   const [sort, setSort] = useState('featured');
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState([]);
@@ -29,14 +30,13 @@ const ProductShowcase = () => {
   const [error, setError] = useState('');
   const [hasMore, setHasMore] = useState(true);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
 
   const buildQueryString = useCallback(
     (pageToLoad) => {
       const query = new URLSearchParams({
         limit: String(MAX_LIMIT),
         page: String(pageToLoad),
-        minPrice: String(priceRange.min),
-        maxPrice: String(priceRange.max),
       });
       if (sort === 'priceAsc') {
         query.set('sort', 'price');
@@ -47,7 +47,7 @@ const ProductShowcase = () => {
       }
       return query.toString();
     },
-    [priceRange, sort],
+    [sort],
   );
 
   const fetchProducts = useCallback(
@@ -70,8 +70,18 @@ const ProductShowcase = () => {
         const withinPrice = (product) =>
           Number(product.price) >= priceRange.min && Number(product.price) <= priceRange.max;
 
+        const matchesSearch = (product) => {
+          if (!searchQuery.trim()) return true;
+          const query = searchQuery.toLowerCase();
+          return (
+            product.title?.toLowerCase().includes(query) ||
+            product.description?.toLowerCase().includes(query) ||
+            product.category?.toLowerCase().includes(query)
+          );
+        };
+
         const processed = data
-          .filter((product) => matchesCategory(product) && withinPrice(product))
+          .filter((product) => matchesCategory(product) && withinPrice(product) && matchesSearch(product))
           .sort((a, b) => {
             if (sort === 'priceAsc') return a.price - b.price;
             if (sort === 'priceDesc') return b.price - a.price;
@@ -94,17 +104,17 @@ const ProductShowcase = () => {
         append ? setLoadingMore(false) : setLoading(false);
       }
     },
-    [buildQueryString, priceRange.min, priceRange.max, selectedFilter, sort],
+    [buildQueryString, priceRange.min, priceRange.max, selectedFilter, sort, searchQuery],
   );
 
   useEffect(() => {
     setPage(1);
     fetchProducts(1, false);
-  }, [selectedFilter, priceRange, sort, fetchProducts]);
+  }, [selectedFilter, priceRange, sort, searchQuery, fetchProducts]);
 
   const handlePriceChange = (type, value) => {
     const numericValue = Number(value);
-    setPriceRange((prev) => {
+    setTempPriceRange((prev) => {
       if (type === 'min') {
         return {
           ...prev,
@@ -116,6 +126,14 @@ const ProductShowcase = () => {
         max: Math.max(numericValue, prev.min + 1),
       };
     });
+  };
+
+  const applyPriceFilter = () => {
+    setPriceRange(tempPriceRange);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   const handleLoadMore = () => {
@@ -162,12 +180,52 @@ const ProductShowcase = () => {
         <p className="lumina-products__description">
           Browse our latest collection of premium goods designed for the modern lifestyle.
         </p>
+        
+        {isSearchOpen && (
+          <div className="lumina-search-bar">
+            <svg viewBox="0 0 20 20" className="lumina-search-icon">
+              <path
+                d="M14 14l4 4"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle
+                cx="9"
+                cy="9"
+                r="6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                fill="none"
+              />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search products by name, description, or category..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="lumina-search-input"
+              autoFocus
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="lumina-search-clear"
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="lumina-products__content">
         <aside className="lumina-filters">
           <div className="lumina-filters__group">
-            <p className="lumina-filters__title">Filters</p>
+            <p className="lumina-filters__title">Category</p>
             <div className="lumina-filter-options">
               {filters.map((filter) => (
                 <label key={filter.value} className="lumina-filter-option">
@@ -192,21 +250,28 @@ const ProductShowcase = () => {
                   type="range"
                   min="0"
                   max="1000"
-                  value={priceRange.min}
+                  value={tempPriceRange.min}
                   onChange={(event) => handlePriceChange('min', event.target.value)}
                 />
                 <input
                   type="range"
                   min="0"
                   max="1000"
-                  value={priceRange.max}
+                  value={tempPriceRange.max}
                   onChange={(event) => handlePriceChange('max', event.target.value)}
                 />
               </div>
               <div className="lumina-price-slider__range">
-                <span>${priceRange.min}</span>
-                <span>${priceRange.max}</span>
+                <span>${tempPriceRange.min}</span>
+                <span>${tempPriceRange.max}</span>
               </div>
+              <button
+                type="button"
+                className="lumina-apply-price-btn"
+                onClick={applyPriceFilter}
+              >
+                Apply Price Filter
+              </button>
             </div>
           </div>
 
@@ -250,8 +315,12 @@ const ProductShowcase = () => {
                       <span aria-hidden="true">★</span>
                       {product.rating?.rate ?? '4.5'}
                     </span>
-                    <button type="button" className="lumina-product-card__link">
-                      View Details
+                    <button 
+                      type="button" 
+                      className="lumina-product-card__link"
+                      onClick={() => onAddToCart(product)}
+                    >
+                      Add to Cart
                     </button>
                   </div>
                 </div>

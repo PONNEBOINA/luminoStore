@@ -1,25 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  font-family: 'Source Sans 3', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  line-height: 1.5;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f2f6fb;
-  color: #1f2c3d;
-  --lumina-bg: #f6f8fb;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #0f172a;
+  --lumina-bg: #f8fafc;
   --lumina-surface: #ffffff;
-  --lumina-muted: #6c7a8b;
-  --lumina-heading: #233350;
-  --lumina-border: #e3e9f2;
-  --lumina-accent: #ef7d55;
-  --lumina-accent-2: #f5b74e;
-  --lumina-shadow: 0 10px 30px rgba(20, 35, 70, 0.08);
-  --lumina-radius: 28px;
-  --lumina-font: 'Source Sans 3', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --lumina-muted: #64748b;
+  --lumina-heading: #0f172a;
+  --lumina-border: #e2e8f0;
+  --lumina-accent: #8b5cf6;
+  --lumina-accent-hover: #7c3aed;
+  --lumina-accent-2: #f59e0b;
+  --lumina-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --lumina-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --lumina-radius: 16px;
+  --lumina-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 *,

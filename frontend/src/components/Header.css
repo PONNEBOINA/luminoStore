@@ -5,32 +5,38 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem clamp(1rem, 5vw, 4rem);
-  background: var(--lumina-surface);
+  padding: 1.25rem clamp(1.5rem, 5vw, 4rem);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--lumina-border);
   font-family: var(--lumina-font);
   color: var(--lumina-heading);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .lumina-header__brand {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
 }
 
 .lumina-header__logo-square {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  background: var(--lumina-accent);
-  border-radius: 3px;
-  transform: rotate(-8deg);
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--lumina-accent) 0%, var(--lumina-accent-hover) 100%);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
 }
 
 .lumina-header__title {
-  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, var(--lumina-accent) 0%, var(--lumina-accent-hover) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .lumina-header__menu-btn {
@@ -80,14 +86,31 @@
 }
 
 .lumina-header__nav a {
-  color: var(--lumina-muted);
+  color: var(--lumina-heading);
   text-decoration: none;
+  font-weight: 600;
+  position: relative;
   transition: color 0.2s ease;
+}
+
+.lumina-header__nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--lumina-accent);
+  transition: width 0.3s ease;
 }
 
 .lumina-header__nav a:hover,
 .lumina-header__nav a:focus-visible {
   color: var(--lumina-accent);
+}
+
+.lumina-header__nav a:hover::after {
+  width: 100%;
 }
 
 .lumina-header__actions {
@@ -97,16 +120,16 @@
 }
 
 .lumina-header__icon-btn {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border: none;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--lumina-muted);
+  border-radius: 12px;
+  background: var(--lumina-bg);
+  color: var(--lumina-heading);
   cursor: pointer;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .lumina-header__icon-btn svg {
@@ -117,7 +140,8 @@
 .lumina-header__icon-btn:hover,
 .lumina-header__icon-btn:focus-visible {
   color: var(--lumina-accent);
-  background: rgba(236, 106, 69, 0.08);
+  background: rgba(139, 92, 246, 0.1);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 900px) {
@@ -169,4 +193,26 @@
     width: 100%;
     justify-content: flex-start;
   }
+}
+
+.lumina-header__cart-btn {
+  position: relative;
+}
+
+.lumina-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.35rem;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
 }
